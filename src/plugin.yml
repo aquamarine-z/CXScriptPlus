@@ -1,0 +1,14 @@
+name: CXScriptPlus
+main: cxplugins.cxscriptplus.CXScriptPlus
+version: 0.0.1
+depend: [CXFundamental]
+commands:
+  cxsp:
+    description: CXScriptPlus
+    usage: /cxsp help
+    permission: cxsp.op
+    permission-message: You don't have <permission>
+  permissions:
+    cxsp.op:
+      description: CXScriptPlus permissions for op
+      default: Op
