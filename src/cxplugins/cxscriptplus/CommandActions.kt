@@ -33,6 +33,13 @@ fun registerAllCommands() {
         }
     }
 
+    register("cxsp t amount"){
+        action{
+            sender.sendMessageWithColor("&3当前活跃的线程数: ${threadPool.size}")
+            true
+        }
+    }
+
     register("cxsp s create") {
         parameter {
             string {
@@ -309,7 +316,54 @@ fun registerAllCommands() {
             true
         }
     }
+    register("cxsp s addauto"){
+        parameter {
+            string{
+                name="name"
+            }
+        }
+        action{
+            var name = strings["name"] ?: ""
+            if (!isScriptExist(name)) {
+                sender.sendMessageWithColor("&4&l[错误] 此脚本不存在")
+            }
+            else {
+                val configuration= CXYamlConfiguration("CXPlugins\\CXScriptPlus", "auto.yml")
+                val list=configuration.getStringList("autoStartOnEnable")
+                list.add(name)
+                configuration.set("autoStartOnEnable",list)
+                configuration.save()
+                sender.sendMessageWithColor("&6[CXScriptPlus] $name 已经添加到自动启动列表")
+            }
+            true
+        }
 
+    }
+    register("cxsp s removeauto") {
+        parameter {
+            string {
+                name = "name"
+            }
+        }
+        action {
+            var name = strings["name"] ?: ""
+            if (!isScriptExist(name)) {
+                sender.sendMessageWithColor("&4&l[错误] 此脚本不存在")
+            } else {
+                val configuration = CXYamlConfiguration("CXPlugins\\CXScriptPlus", "auto.yml")
+                val list = configuration.getStringList("autoStartOnEnable")
+                if (!list.contains(name)) {
+                    sender.sendMessageWithColor("&4&l[错误] 此脚本未被添加到自动启动列表")
+                    return@action true
+                }
+                list.remove(name)
+                configuration.set("autoStartOnEnable", list)
+                configuration.save()
+                sender.sendMessageWithColor("&6[CXScriptPlus] $name 已被移出自动启动列表")
+            }
+            true
+        }
+    }
     register("cxsp i bindleft") {
         parameter {
             string {
@@ -629,7 +683,6 @@ fun registerAllCommands() {
         }
     }
 
-
     /*register("cxsp f create") {
         parameter {
             string {
@@ -887,6 +940,8 @@ fun printCommandHelp(sender: CommandSender,page:Int=1){
         sender.sendMessageWithColor("&6[CXScriptPlus] 9./cxsp s cdenable <脚本名> <true/false>: 设置<脚本名>是否启用冷却时间")
         sender.sendMessageWithColor("&6[CXScriptPlus] 10./cxsp s cdtype <脚本名> <private/public>: 设置<脚本名>冷却时间类型 private(玩家私有的) public(玩家公共的)")
         sender.sendMessageWithColor("&6[CXScriptPlus] 11./cxsp s cdtime <脚本名> <时间(毫秒)>: 设置<脚本名>的冷却时间为<时间>毫秒 1000毫秒=1秒")
+        sender.sendMessageWithColor("&6[CXScriptPlus] 12./cxsp s addauto <脚本名>: 设置<脚本名>为开服自动启动的脚本")
+        sender.sendMessageWithColor("&6[CXScriptPlus] 13./cxsp s removeauto <脚本名>: 把<脚本名>从开服启动脚本列表中移除")
     }
     if(page==3){
         sender.sendMessageWithColor("&b[CXScriptPlus] 1./cxsp i bindleft <脚本名> : 绑定你当前手持物品的左键触发脚本为<脚本名>")
@@ -915,5 +970,9 @@ fun printCommandHelp(sender: CommandSender,page:Int=1){
         sender.sendMessageWithColor("&2[CXScriptPlus] 特殊命令: costItemInHand <数量> : 扣除手上一定数量的物品 (多用于消耗道具的脚本)")
         sender.sendMessageWithColor("&2[CXScriptPlus] 特殊命令: breakBlock <距离> : 摧毁<距离>之内玩家准星所指的第一个方块 (多用于挖矿的脚本)")
         sender.sendMessageWithColor("&2[CXScriptPlus] 特殊命令: stopIfFailed : 与<执行身份>的特殊用法搭配使用 表示如果前面有需要用<执行身份>的特殊用法的命令 且执行失败(因为玩家钱数不符合要求) 的时候 退出此脚本不再进行后面的内容")
+        sender.sendMessageWithColor("&4[CXScriptPlus] 特殊命令(实验内容): runsuspend <脚本名> : 挂起运行另外一个脚本 运行时不阻塞服务器")
+        sender.sendMessageWithColor("&4[CXScriptPlus] 特殊命令(实验内容): delay <时间> : 阻塞当前运行脚本的线程使其等待<时间>毫秒")
+        sender.sendMessageWithColor("&4[CXScriptPlus] 特殊命令(实验内容): always <脚本名> : 挂起并重复运行 <脚本名> 运行时不阻塞服务器")
+        sender.sendMessageWithColor("&4[CXScriptPlus] 特殊命令(实验内容): repeat <次数> <脚本名> : 挂起并重复运行指定次数的 <脚本名> 运行时不阻塞服务器")
     }
 }
