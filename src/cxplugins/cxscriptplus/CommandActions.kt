@@ -7,6 +7,19 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 fun registerAllCommands() {
+    register("cxsp") {
+        action {
+
+            //println(1)
+            if (sender is Player) {
+                    (sender as Player).openFrame(ScriptMenuFrame())
+                } else {
+                    sender.sendMessageWithColor("&4&l[错误] 该命令必须在线玩家执行")
+                }
+            true
+
+        }
+    }
     register("cxsp h") {
         parameter {
             int {
@@ -365,7 +378,7 @@ fun registerAllCommands() {
                 var itemInHand = (sender as Player).itemInHand
 
                 //var name=strings["name"]!!
-                itemInHand = itemInHand.setNBTValueToCopy(null, "CXScriptPlus", "bindleft")
+                itemInHand = itemInHand.setNBTValueToCopy(null, "CXScriptPlus", "bindright")
                 (sender as Player).itemInHand = itemInHand
                 sender.sendMessageWithColor("&6[CXScriptPlus] 该物品右键脚本已解除绑定")
                 return@action true

@@ -1,4 +1,5 @@
 package cxplugins.cxscriptplus
+import cxplugins.cxfundamental.minecraft.kotlindsl.toColor
 import cxplugins.cxfundamental.minecraft.server.CXItemStack
 import cxplugins.cxfundamental.minecraft.server.CXPluginMain
 import org.bukkit.Bukkit
@@ -11,6 +12,7 @@ class CXScriptPlus: CXPluginMain(CXItemStack(Material.EMPTY_MAP,1,"&3&lCXScriptP
 
     }
     override fun onEnable() {
+        this.noticePrefix="&4&l[´íÎó]".toColor()
         registerAllCommands()
         plugin=this
         Bukkit.getPluginManager().registerEvents(Listeners(),this)
