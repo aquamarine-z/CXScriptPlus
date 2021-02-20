@@ -642,7 +642,7 @@ class ScriptRoleSelectFrame(private var command:String, private var scriptName:S
                     }
                     leftClick { event, frame ->
                         CXCommand.runWithoutPermission(event.whoClicked as Player,"cxsp s insert $scriptName $location \"$command\" op")
-                        event.whoClicked.closeFrame()
+                        event.whoClicked.openFrame(ScriptInformationFrame(scriptName))
                     }
                 }
 
@@ -656,7 +656,7 @@ class ScriptRoleSelectFrame(private var command:String, private var scriptName:S
                     }
                     leftClick { event, frame ->
                         CXCommand.runWithoutPermission(event.whoClicked as Player,"cxsp s insert $scriptName $location  \"$command\" player")
-                        event.whoClicked.closeFrame()
+                        event.whoClicked.openFrame(ScriptInformationFrame(scriptName))
                     }
                 }
 
@@ -670,7 +670,7 @@ class ScriptRoleSelectFrame(private var command:String, private var scriptName:S
                     }
                     leftClick { event, frame ->
                         CXCommand.runWithoutPermission(event.whoClicked as Player,"cxsp s insert $scriptName $location \"$command\" commandBlock")
-                        event.whoClicked.closeFrame()
+                        event.whoClicked.openFrame(ScriptInformationFrame(scriptName))
                     }
                 }
                 button(3,0){

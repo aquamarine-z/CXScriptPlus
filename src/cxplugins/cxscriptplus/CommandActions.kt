@@ -5,6 +5,7 @@ import cxplugins.cxfundamental.minecraft.file.CXYamlConfiguration
 import cxplugins.cxfundamental.minecraft.kotlindsl.*
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import java.util.*
 
 fun registerAllCommands() {
     register("cxsp") {
@@ -222,6 +223,28 @@ fun registerAllCommands() {
                 (sender as Player).openFrame(ScriptMenuFrame())
             } else {
                 sender.sendMessageWithColor("&4&l[错误] 该命令必须在线玩家执行")
+            }
+            true
+        }
+    }
+    register("cxsp s runtiming") {
+        parameter {
+            string {
+                name = "name"
+            }
+            long{
+                name="time"
+            }
+        }
+        action {
+            var name = strings["name"] ?: ""
+            if (!isScriptExist(name)) {
+                sender.sendMessageWithColor("&4&l[错误] 此脚本不存在")
+            } else {
+                runtimingScripts.first.add(name)
+                runtimingScripts.second.add(longs["time"]!! + Date().time)
+                //saveAllTimingScripts()
+                //executeScript(sender, getScriptByName(name)!!)
             }
             true
         }
@@ -937,6 +960,7 @@ fun printCommandHelp(sender: CommandSender,page:Int=1){
         sender.sendMessageWithColor("&6[CXScriptPlus] 6./cxsp s info <脚本名> : 获取 <脚本名> 的相关信息")
         sender.sendMessageWithColor("&6[CXScriptPlus] 7./cxsp s menu : 打开可视化脚本编辑菜单")
         sender.sendMessageWithColor("&6[CXScriptPlus] 8./cxsp s run <脚本名> : 执行<脚本名>")
+        sender.sendMessageWithColor("&6[CXScriptPlus] 8./cxsp s runtiming <脚本名> <时间(毫秒)>: 设定在延时<时间>后执行<脚本名>")
         sender.sendMessageWithColor("&6[CXScriptPlus] 9./cxsp s cdenable <脚本名> <true/false>: 设置<脚本名>是否启用冷却时间")
         sender.sendMessageWithColor("&6[CXScriptPlus] 10./cxsp s cdtype <脚本名> <private/public>: 设置<脚本名>冷却时间类型 private(玩家私有的) public(玩家公共的)")
         sender.sendMessageWithColor("&6[CXScriptPlus] 11./cxsp s cdtime <脚本名> <时间(毫秒)>: 设置<脚本名>的冷却时间为<时间>毫秒 1000毫秒=1秒")
